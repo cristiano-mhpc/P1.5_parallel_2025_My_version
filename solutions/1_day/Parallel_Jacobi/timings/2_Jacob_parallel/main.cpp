@@ -1,0 +1,22 @@
+#include <vector>
+#include <iostream>
+#include <fstream>
+#include "CMesh.hpp"
+#include "BoundCond.hpp"
+#include "CSolver.hpp"
+
+
+
+int main(int argc, char** argv){
+{
+  CSimple_timer t{"Using std::for_each"};
+  int size = std::stoi(argv[1]);
+  CMesh<double> data(size, boundary_cond<double>);
+
+  CSolver<double> solver; 
+  solver.jacobi(data, 100, 25);
+  CSimple_timer::print_timing_results(size);
+
+}
+
+}
