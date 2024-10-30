@@ -1,0 +1,18 @@
+#!/bin/bash 
+
+#SBATCH --job-name=2node_jacobi 
+#SBATCH --nodes=2 # Number of nodes
+#SBATCH --ntasks-per-node=32
+#SBATCH --cpus-per-task=1
+#SBATCH --partition=boost_usr_prod
+#SBATCH --time=00:05:00 
+#SBATCH --out=2node_12h.out
+#SBATCH --err=2node1_12h.err
+#SBACTH --account=ict24_mhpc
+
+module load openmpi/4.1.6--gcc--12.2.0
+
+mpirun -np 2 ./ex_rel.x 1200 
+
+echo 2
+
