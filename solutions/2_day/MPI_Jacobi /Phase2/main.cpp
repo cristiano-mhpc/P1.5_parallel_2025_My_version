@@ -6,8 +6,8 @@
 #include "CSolver.hpp"
 #include <mpi.h>
 
-const size_t max_iter = 1000;
-const size_t PrintInterval = 250
+const size_t max_iter = 100;
+const size_t PrintInterval = 25;
 
 int main(int argc, char** argv){
   
@@ -38,7 +38,7 @@ int main(int argc, char** argv){
     std::cout << "From rank " << my_rank << ": " << std::endl;
     //my_data.test_print();
     CSolver<double> solver;
-    solver.jacobi(data, my_rank, comm_sz, max_iter, PrintInterval, MPI_COMM_WORLD);
+    solver.jacobi(my_data, my_rank, comm_sz, max_iter, PrintInterval, local_rows, rem, MPI_COMM_WORLD);
   
   } else if ( my_rank == comm_sz -1){
     //process assigned to the tail
@@ -46,7 +46,7 @@ int main(int argc, char** argv){
     std::cout << "From rank " << my_rank << ": " << std::endl;
     //my_data.test_print();
     CSolver<double> solver;
-    solver.jacobi(data, my_rank, comm_sz, max_iter, PrintInterval, MPI_COMM_WORLD);
+    solver.jacobi(my_data, my_rank, comm_sz, max_iter, PrintInterval, local_rows, rem, MPI_COMM_WORLD);
 
   } else {
     //processes asigned to the body
@@ -54,13 +54,9 @@ int main(int argc, char** argv){
     std::cout << "From rank " << my_rank << ": " << std::endl;
     //my_data.test_print();
     CSolver<double> solver;
-    solver.jacobi(data, my_rank, comm_sz, max_iter, PrintInterval, MPI_COMM_WORLD);
+    solver.jacobi(my_data, my_rank, comm_sz, max_iter, PrintInterval, local_rows, rem, MPI_COMM_WORLD);
   }
   
-  //CSolver<double> solver; 
-
-  //solver.jacobi(data, 100, 25);
-
   //CSimple_timer::print_timing_results(size);
 
   MPI_Finalize();

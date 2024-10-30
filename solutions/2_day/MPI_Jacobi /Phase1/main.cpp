@@ -33,7 +33,7 @@ int main(int argc, char** argv){
     //process assigned to the head
     CMesh<double> my_data(rows_to_handle + 1, N+2, N+2, my_rank, comm_sz, start_row, MPI_COMM_WORLD);
     std::cout << "From rank " << my_rank << ": " << std::endl;
-     my_data.test_print();
+    my_data.test_print();
   
   } else if ( my_rank == comm_sz -1){
     //process assigned to the tail
@@ -46,9 +46,9 @@ int main(int argc, char** argv){
     CMesh<double> my_data(rows_to_handle + 2, N+2, N+2, my_rank, comm_sz, start_row, MPI_COMM_WORLD);
     std::cout << "From rank " << my_rank << ": " << std::endl;
     my_data.test_print();
+
   }
   
-
 
   //CSolver<double> solver; 
 

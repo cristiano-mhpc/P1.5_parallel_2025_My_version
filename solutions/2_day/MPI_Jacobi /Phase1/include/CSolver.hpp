@@ -21,8 +21,8 @@ public:
     size_t m = M.col;
 
     while (step < max_steps) {
-      for (i = 1; i < rows - 1; i++) {
-        for (j = 1; j < colm - 1; j++) {
+      for (i = 1; i < n - 1; i++) {
+        for (j = 1; j < m - 1; j++) {
           M.new_field[i * n + j] =
               0.25 * (M.field[(i + 1) * n + j] + M.field[(i - 1) * n + j] +
                       M.field[i * n + j + 1] + M.field[i * n + j - 1]);

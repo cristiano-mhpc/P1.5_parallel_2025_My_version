@@ -14,12 +14,11 @@ template <typename T>
 class CSolver {
 public:
   void jacobi(CMesh<T> &M, int my_rank, int comm_sz, const size_t &max_steps,
-              const size_t &PrintInterval, MPI_Comm comm) {
-
+              const size_t &PrintInterval, size_t local_rows, int rem, MPI_Comm comm){
     size_t step{0};
     size_t i, j;
     size_t n = M.rows;
-    size_t m = M.col;
+    size_t m = M.colm;
 
     while (step < max_steps) {
       /**
@@ -27,15 +26,15 @@ public:
        * and another with the NEXT process.
       */
       int next_rank = (my_rank == comm_sz - 1) ? MPI_PROC_NULL : my_rank + 1;
-      int prev_rank = (rank == 0) ? MPI_PROC_NULL : rank - 1;
+      int prev_rank = (my_rank == 0) ? MPI_PROC_NULL : my_rank - 1;
       
-      //send and receive with the prev_rank
-      MPI_Send_recv(&M.field[m + 1], m-2, MPI_DOUBLE, prev_rank, 0,
-                   &M.field[1], m-2, MPI_DOUBLE, prev_rank, 0, comm, MPI_STATUS_IGNORE);
-
-      //send and receive with the next_rank
-      MPI_Send_recv(&M.field[m*(m - 1) + 1], m-2, MPI_DOUBLE, next_rank, 1,
-                   &M.field[m*m + 1], m-2, MPI_DOUBLE, next_rank, 1, comm, MPI_STATUS_IGNORE);
+      //send to prev_rank, recv from next_rank
+      MPI_Sendrecv(&M.field[m + 1], m-2, MPI_DOUBLE, prev_rank, 1,
+                  &M.field[(n-1)*m + 1], m-2, MPI_DOUBLE, next_rank, 1, comm, MPI_STATUS_IGNORE);
+      
+      //send to next_rank, recv from prev_rank
+      MPI_Sendrecv(&M.field[(n-2)*(m-1) + 1], m-2, MPI_DOUBLE, next_rank, 0,
+                   &M.field[1], m - 2, MPI_DOUBLE, prev_rank, 0, comm, MPI_STATUS_IGNORE);
 
       for (i = 1; i < n - 1 ; i++) {
         for (j = 1; j < m - 1; j++) {
@@ -44,24 +43,53 @@ public:
                       M.field[i * m + j + 1] + M.field[i * m + j - 1]);
         }
       }
-
-      //if step == PrintInterval, print new_field
-      if(step%PrintInterval == 0){
-        std::ostringstream temp;
-        temp << "./data/" << std::setw(5) << std::setfill('0') << step <<".dat";
-        std::ofstream filevar; 
+      
+      if (!my_rank){
+        //print to file
+        if(step%PrintInterval == 0){
+          std::ostringstream temp;
+          temp << "./data/" << std::setw(5) << std::setfill('0') << step <<".txt";
+          std::ofstream filevar; 
  
-        //std::string filename = "./data/"+name.str()+".dat"; 
-        filevar.open(temp.str());
-        M.print(filevar, M.new_field, M.N);
+          filevar.open(temp.str(), std::ios::app);
+          //first print p0 block
+          for(size_t i = 0; i < n-1; i++){
+            for(size_t j = 0; j < m; j++){
+              filevar << M.new_field[i * m + j] << " "; 
+            }
+            filevar << std::endl;
+          }
+          
+          //receive blocks from other processes
+          for (int rank = 1; rank < comm_sz; rank++){
+            //compute how many rows each rank will send. We are not receiving ghost cells.
+            size_t rows_from_rank = (rank < rem) ? local_rows + 1: local_rows;
+            MPI_Recv(M.print_field.data(), rows_from_rank*m, MPI_DOUBLE, rank, 0, comm, MPI_STATUS_IGNORE);
+
+            //append to the .txt file right after receiving
+            for(size_t i = 0; i < rows_from_rank; i++){
+              for(size_t j = 0; j < m; j++){
+                filevar << M.print_field[i * m + j] << " "; 
+                std::cout << M.print_field[i * m + j] << " "; 
+              }
+              filevar << std::endl;
+              std::cout << std::endl;
+            }
+        }
+        filevar.close();
+      }
+      } else {
+        //just compute the local rows here again instead of passing from main. We are not sending ghost cells.
+        size_t rows_to_handle = (my_rank < rem) ? local_rows + 1: local_rows;
+        MPI_Send(&M.new_field[m], rows_to_handle*m, MPI_DOUBLE, 0, 0, comm);
       }
 
       M.new_field.swap(M.field);
 
       step++;
-
-    } // while
-  }
-};
+      
+    }//while
+  }//jacobi
+};//CSolver
 
 #endif
