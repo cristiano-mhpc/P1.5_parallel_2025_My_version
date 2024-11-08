@@ -27,11 +27,13 @@ inline int index_f ( int i1, int i2, int i3, int n1, int n2, int n3);
 
 void plot_data_1d( char* name, int n1, int n2, int n3, int dir, double* data);
 void plot_data_2d( char* name, int n1, int n2, int n3, int dir, double* data);
-void init_fftw(fftw_handler *fft, int n1, int n2, int n3);
+void init_fftw(fftw_handler *fft_1d, fftw_handler *fft_2d, int n1, int n2, int n3);
 void close_fftw(fftw_handler *fft);
 
 void derivative(fftw_handler* fft,int n1, int n2, int n3, double L1, double L2, double L3, int ipol, double* data, double* deriv);
-void fft_3d(fftw_handler* fft, int n1, int n2, int n3, double *data_direct, fftw_complex* data_rec, bool direct_to_reciprocal);
+//void fft_3d(fftw_handler* fft, int n1, int n2, int n3, double *data_direct, fftw_complex* data_rec, bool direct_to_reciprocal);
+void fft_1d(fftw_handler* fft, int n1, double *data_direct, fftw_complex* data_rec, bool direct_to_reciprocal);
+void fft_2d(fftw_handler* fft, int n2, int n3, double *data_direct, fftw_complex* data_rec, bool direct_to_reciprocal);
  
 
 

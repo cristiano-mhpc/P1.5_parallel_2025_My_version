@@ -46,26 +46,30 @@ void init_fftw(fftw_handler *fft_1d, fftw_handler *fft_2d, int n1, int n2, int n
       (fftw_complex *)fftw_malloc(n1 * sizeof(fftw_complex));
 
   fft_2d->fftw_data =
-      (fftw_complex *)fftw_malloc(n2 * n3 sizeof(fftw_complex));
+      (fftw_complex *)fftw_malloc(n2 * n3 * sizeof(fftw_complex));
 
   /*
-   * Allocation of FFTW plans for direct and inverse transform
+   * Allocation of FFTW plans for direct a
+  // Now normalize the concentration
+    ss = 1.0/(ss*fac);
+    for (i1=0; i1< n1*n2*n3; ++i1)
+      conc[i1]*=ss;
+      
+   // initialize the fftw system nd inverse transform
    * for complex2complex multimentionals data structures
    * See also:
    * http://www.fftw.org/doc/Complex-Multi_002dDimensional-DFTs.html#Complex-Multi_002dDimensional-DFTs
    *
    */
-  fft_1d->fw_plan = fftw_plan_dft_1d(n1, fft->fftw_data, fft->fftw_data,
+  fft_1d->fw_plan = fftw_plan_dft_1d(n1, fft_1d->fftw_data, fft_1d->fftw_data,
                                   FFTW_FORWARD, FFTW_ESTIMATE);
-  fft_1d->bw_plan = fftw_plan_dft_1d(n1, fft->fftw_data, fft->fftw_data,
+  fft_1d->bw_plan = fftw_plan_dft_1d(n1, fft_1d->fftw_data, fft_1d->fftw_data,
                                   FFTW_BACKWARD, FFTW_ESTIMATE);
 
-  fft_2d->fw_plan = fftw_plan_dft_2d(n2, n3, fft->fftw_data, fft->fftw_data,
+  fft_2d->fw_plan = fftw_plan_dft_2d(n2, n3, fft_2d->fftw_data, fft_2d->fftw_data,
                                   FFTW_FORWARD, FFTW_ESTIMATE);
-  fft_2d->bw_plan = fftw_plan_dft_2d(n2, n3, fft->fftw_data, fft->fftw_data,
+  fft_2d->bw_plan = fftw_plan_dft_2d(n2, n3, fft_2d->fftw_data, fft_2d->fftw_data,
                                   FFTW_BACKWARD, FFTW_ESTIMATE);
-
-                
 }
 
 void close_fftw(fftw_handler *fft) {
@@ -94,7 +98,7 @@ void close_fftw(fftw_handler *fft) {
  */
 
 
-void fft_1d(fftw_handler *fft , int n1, double *data_direct,
+void fft_1d(fftw_handler *fft, int n1, double *data_direct,
             fftw_complex *data_rec, bool direct_to_reciprocal) {
   double fac;
   int i;
@@ -102,7 +106,8 @@ void fft_1d(fftw_handler *fft , int n1, double *data_direct,
   // Now distinguish in which direction the FFT is performed
   if (direct_to_reciprocal) {
     for (i = 0; i < n1 ; i++) {
-      fft->fftw_data[i] = data_direct[i] + 0.0 * I;
+      //fft->fftw_data[i] = data_direct[i] + 0.0 * I;
+      fft->fftw_data[i] = data_direct[i];
     }
 
     fftw_execute_dft(fft->fw_plan, fft->fftw_data, fft->fftw_data);
@@ -163,7 +168,7 @@ void fft_3d(fftw_handler *fft, fftw_handler *fft2, int n1, int n2, int n3, doubl
 
     //fftw_execute_dft(fft->fw_plan, fft->fftw_data, fft->fftw_data);
 
-    fft_2d()
+    //fft_2d();
 
 
     memcpy(data_rec, fft->fftw_data, n1 * n2 * n3 * sizeof(fftw_complex));
@@ -183,7 +188,7 @@ void fft_3d(fftw_handler *fft, fftw_handler *fft2, int n1, int n2, int n3, doubl
 
 
 
-
+/*
 void fft_3d(fftw_handler *fft, fftw_handler *fft2, int n1, int n2, int n3, double *data_direct,
   fftw_complex *data_rec, bool direct_to_reciprocal) {
 
@@ -211,3 +216,4 @@ void fft_3d(fftw_handler *fft, fftw_handler *fft2, int n1, int n2, int n3, doubl
     }
   }
 }
+*/
