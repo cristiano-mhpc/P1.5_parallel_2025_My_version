@@ -14,7 +14,7 @@
 /*
  * Calculate the derivative in direction ipol of the array 'data'
  */
-void derivative( fftw_handler* fft, int n1, int n2, int n3, double L1, double L2, double L3, int ipol, double* data, double* deriv ){
+void derivative( fftw_handler* fft, fftw_handler* fft_1d_h, fftw_handler* fft_2d_h, int n1, int n2, int n3, double L1, double L2, double L3, int ipol, double* data, double* deriv ){
 
     fftw_complex *aux;
     double G;
@@ -28,7 +28,7 @@ void derivative( fftw_handler* fft, int n1, int n2, int n3, double L1, double L2
     aux = ( fftw_complex* ) fftw_malloc( n1 * n2 * n3 * sizeof(fftw_complex) );
 
     // First get the FFT of data
-    fft_3d( fft, n1, n2, n3, data, aux, true );
+    fft_3d( fft, fft_1d_h, fft_2d_h, n1, n2, n3, data, aux, true );
 
     if( ipol == 1 ){
 	
@@ -85,6 +85,6 @@ void derivative( fftw_handler* fft, int n1, int n2, int n3, double L1, double L2
     }
     
     // Now go back to real space
-    fft_3d( fft, n1, n2, n3, deriv, aux, false);
+    fft_3d( fft, fft_1d_h, fft_2d_h, n1, n2, n3, deriv, aux, false );
     fftw_free(aux);
 }

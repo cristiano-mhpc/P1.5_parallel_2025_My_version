@@ -1,5 +1,5 @@
 CC=gcc
-CFLAGS = -O3 -Wall -I$(FFTW_INC)
+CFLAGS = -O3 -Wall -I$(FFTW_INC) -g
 LIBS = -L$(FFTW_LIB) -lfftw3 -lm
 EXE = diffusion.x
 SRC = diffusion.c plot_data.c fft_wrapper.c derivative.c 

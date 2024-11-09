@@ -1,6 +1,6 @@
-CC=mpicc
-CFLAGS = -O0 -g -Wall -I./ -I$(FFTW_INC) -I/u/shared/programs/x86_64/openmpi/1.8.3/gnu/4.9.2/torque/include/ 
-LIBS = -L$(FFTW_LIB) -lfftw3_mpi -lfftw3 -lm		
+CC=gcc
+CFLAGS = -O3 -Wall -I$(FFTW_INC) -g
+LIBS = -L$(FFTW_LIB) -lfftw3 -lm
 EXE = diffusion.x
 SRC = diffusion.c plot_data.c fft_wrapper.c derivative.c 
 HEAD = utilities.h
@@ -16,7 +16,7 @@ $(EXE): $(OBJ)
 	$(CC) $(CFLAGS) -c $<
 
 flush:
-	rm -f *.dat
+	rm -f *.dat *.png *.gif
 
 clean: 
 	rm -f *.o *.x *~
