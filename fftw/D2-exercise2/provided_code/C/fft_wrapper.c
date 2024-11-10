@@ -80,16 +80,16 @@ void init_fftw(fftw_dist_handler *fft, int n1, int n2, int n3, MPI_Comm comm) {
    */
 
   fft->fftw_data =
-      (fftw_complex *)fftw_malloc(local_n1 * n2 * n3 * sizeof(fftw_complex));
+      (fftw_complex *)fftw_malloc(fft->local_n1 * n2 * n3 * sizeof(fftw_complex));
 
   fft->fw_plan_1d =
-      fftw_plan_dft_1d(fft->local_n1 * npes, fft->fftw_data, fft_1d->fftw_data,
+      fftw_plan_dft_1d(fft->local_n1 * npes, fft->fftw_data, fft->fftw_data,
                        FFTW_FORWARD, FFTW_ESTIMATE);
   fft->fw_plan_2d = fftw_plan_dft_2d(n2, n3, fft->fftw_data, fft->fftw_data,
                                      FFTW_FORWARD, FFTW_ESTIMATE);
 
   fft->bw_plan_1d =
-      fftw_plan_dft_1d(fft->local_n1 * npes, fft->fftw_data, fft_1d->fftw_data,
+      fftw_plan_dft_1d(fft->local_n1 * npes, fft->fftw_data, fft->fftw_data,
                        FFTW_BACKWARD, FFTW_ESTIMATE);
   fft->bw_plan_2d = fftw_plan_dft_2d(n2, n3, fft->fftw_data, fft->fftw_data,
                                      FFTW_BACKWARD, FFTW_ESTIMATE);
@@ -133,13 +133,12 @@ void fft_3d(fftw_dist_handler *fft, double *data_direct, fftw_complex *data_rec,
   int n2 = fft->n2, n3 = fft->n3, n1 = fft->n1, npes, block_dim, nblock;
   int local_n1 = fft->local_n1;
   int local_n2 = fft->local_n2;
-  ftw_complex *resrvbuf;
+  fftw_complex *resrvbuf;
 
   //query the number of processes
   MPI_Comm_size(fft->mpi_comm, &npes);
   /* Allocate buffers to send and receive data */
-  resrvbuf =
-      (fftw_complex *)fftw_malloc(local_n1 * n2 * n3 * sizeof(fftw_complex));
+  resrvbuf = (fftw_complex *)fftw_malloc(local_n1 * n2 * n3 * sizeof(fftw_complex));
 
   // Now distinguish in which direction the FFT is performed
   if (direct_to_reciprocal) {
@@ -173,7 +172,7 @@ void fft_3d(fftw_dist_handler *fft, double *data_direct, fftw_complex *data_rec,
             // destination index
             int dest_i1 = i1 + block * local_n1;
             int dest_i2 = i2;
-            int dest_index = dest_i1 * (local_n2 * n3) + dest_i2 * n3 + n3;
+            int dest_index = dest_i1 * (local_n2 * n3) + dest_i2 * n3 + i3;
 
             resrvbuf[dest_index] = fft->fftw_data[src_index];
           }
@@ -181,18 +180,18 @@ void fft_3d(fftw_dist_handler *fft, double *data_direct, fftw_complex *data_rec,
       }
     }
 
-    // Perform an Alltoall communication to perform a blocked transposition. Use
-    // fft->fftw_data as a receiving buffer
-    MPI_Alltoall(resrvbuf, local_n1 * local_n2 * n3 * sizeof(fftw_complex),
-                 fft->fftw_data,
-                 local_n1 * local_n2 * n3 * sizeof(fftw_complex), MPI_BYTE,
-                 fft->mpi_comm);
+    /**
+     * Perform an Alltoall communication to perform a blocked transposition.
+     * Use fft->fftw_data as a receiving buffer. 
+    */
+
+    MPI_Alltoall(resrvbuf,local_n1 * local_n2 * n3 * sizeof(fftw_complex), MPI_BYTE ,fft->fftw_data, local_n1 * local_n2 * n3 * sizeof(fftw_complex), MPI_BYTE, fft->mpi_comm);
 
     /**
      * Perform a local transpose in i1 <-----> i3 directions in my
      * fft->fftw_data. Put transpose data in the resrv buffer. At this point,
      * fftw_data is (local_n1 * npes) by local_n2 by n3
-     */
+    */
 
     for (i1 = 0; i1 < local_n1 * npes; i1++) {
       for (i2 = 0; i2 < local_n2; i2++) {
@@ -233,17 +232,14 @@ void fft_3d(fftw_dist_handler *fft, double *data_direct, fftw_complex *data_rec,
           int orig_index = i1 * (local_n2 * (local_n1 * npes)) +
                            i2 * ((local_n1 * npes)) + i3;
           int trans_index = i3 * (local_n2 * n3) + i2 * n3 + i1;
-          fft->fftw_data[trans_index] = resrvbuf[orig_index]
+          fft->fftw_data[trans_index] = resrvbuf[orig_index];
         }
       }
     }
 
     // make another Alltoall communication to perform blocked transposition.
     // Send fft->fftw_data and receive on resrvbuf
-    MPI_Alltoall(fft->fftw_data,
-                 local_n1 * local_n2 * n3 * sizeof(fftw_complex), resrvbuf,
-                 local_n1 * local_n2 * n3 * sizeof(fftw_complex), MPI_BYTE,
-                 fft->mpi_comm);
+    MPI_Alltoall(fft->fftw_data,local_n1 * local_n2 * n3 * sizeof(fftw_complex), MPI_BYTE,resrvbuf,local_n1 * local_n2 * n3 * sizeof(fftw_complex), MPI_BYTE,fft->mpi_comm);
 
     /// perform the reordering again. Write the reordered data to fft->
     /// fft->fftw_data
@@ -254,7 +250,7 @@ void fft_3d(fftw_dist_handler *fft, double *data_direct, fftw_complex *data_rec,
             // source index
             int src_i1 = i1 + block * local_n1;
             int src_i2 = i2;
-            int src_index = src_i1 * (local_n2 * n3) + src_i2 * n3 + n3;
+            int src_index = src_i1 * (local_n2 * n3) + src_i2 * n3 + i3;
 
             // destination index
             int dest_i1 = i1;
@@ -271,7 +267,10 @@ void fft_3d(fftw_dist_handler *fft, double *data_direct, fftw_complex *data_rec,
     //buffer pointed to by data_direct
 
   } else { /* Implement the reverse transform */
-
+    /**
+     * copy each slice of data_rec to the corresponding slice of fftw_data
+     * Then immediately do 2d dft on that slice
+     */
     for (i1 = 0; i1 < local_n1; i1++) {
       for (i2 = 0; i2 < n2; i2++) {
         for (i3 = 0; i3 < n3; i3++) {
@@ -280,16 +279,15 @@ void fft_3d(fftw_dist_handler *fft, double *data_direct, fftw_complex *data_rec,
               data_rec[n3 * n2 * i1 + n3 * i2 + i3];
         }
       }
-      // execute a 2d DFT og every slice
+      // execute a 2d DFT on every slice. To get the starting index, just set i2 = 0 and i3 =0.
       fftw_execute_dft(fft->bw_plan_2d, &(fft->fftw_data[n3 * n2 * i1]),
                        &(fft->fftw_data[n3 * n2 * i1]));
     }
-
     /*
-     * Reorder the different data blocks to be contigous in memory.
+     * Reorder the different data blocks to prepare for MPI_Alltoall.
      * Put the reordered data in resrvbuf
-     *
-     */
+    */
+
     for (int block = 0; block < npes; block++) {
       for (i1 = 0; i1 < local_n1; i1++) {
         for (i2 = 0; i2 < local_n2; i2++) {
@@ -302,7 +300,7 @@ void fft_3d(fftw_dist_handler *fft, double *data_direct, fftw_complex *data_rec,
             // destination index
             int dest_i1 = i1 + block * local_n1;
             int dest_i2 = i2;
-            int dest_index = dest_i1 * (local_n2 * n3) + dest_i2 * n3 + n3;
+            int dest_index = dest_i1 * (local_n2 * n3) + dest_i2 * n3 + i3;
 
             resrvbuf[dest_index] = fft->fftw_data[src_index];
           }
@@ -312,10 +310,7 @@ void fft_3d(fftw_dist_handler *fft, double *data_direct, fftw_complex *data_rec,
 
     // Perform an Alltoall communication to perform a blocked transposition. Use
     // fft->fftw_data as a receiving buffer
-    MPI_Alltoall(resrvbuf, local_n1 * local_n2 * n3 * sizeof(fftw_complex),
-                 fft->fftw_data,
-                 local_n1 * local_n2 * n3 * sizeof(fftw_complex), MPI_BYTE,
-                 fft->mpi_comm);
+    MPI_Alltoall(resrvbuf, local_n1 * local_n2 * n3 * sizeof(fftw_complex),MPI_BYTE,fft->fftw_data,local_n1 * local_n2 * n3 * sizeof(fftw_complex), MPI_BYTE,fft->mpi_comm);
 
     /**
      * Perform a local transpose in i1 <-----> i3 directions in my
@@ -337,8 +332,12 @@ void fft_3d(fftw_dist_handler *fft, double *data_direct, fftw_complex *data_rec,
       }
     }
 
-    // perform a 1d dft along the i3 direction of resrvbuf. resrvbuf is n3 by
-    // local_n2 by (local_n1 * npes)
+
+    /**
+     * Perform a 1d dft along the i3 direction of resrvbuf.
+     * resrvbuf is n3 by local_n2 by (local_n1 * npes)
+     */
+
     for (i1 = 0; i1 < n3; i1++) {
       for (i2 = 0; i2 < local_n2; i2++) {
         int the_index = i1 * (local_n2 * local_n1 * npes) +
@@ -351,31 +350,31 @@ void fft_3d(fftw_dist_handler *fft, double *data_direct, fftw_complex *data_rec,
     //<<----------------lets us now retrace our step
 
     /**
-     * Perform a local transpose in i1 <-----> i3 directions in resrvbuf. Put
-     * transposed data in the fft->fftw_data buffer. At this point, resrvbuf is
+     * Perform a local transpose in i1 <-----> i3 directions in my resrvbuf. Put
+     * transposed data in my fft->fftw_data buffer. At this point, resrvbuf is
      * n3 by local_n2 by (local_n1 * npes)
      */
-
     for (i1 = 0; i1 < n3; i1++) {
       for (i2 = 0; i2 < local_n2; i2++) {
         for (i3 = 0; i3 < local_n1 * npes; i3++) {
           int orig_index = i1 * (local_n2 * (local_n1 * npes)) +
                            i2 * ((local_n1 * npes)) + i3;
           int trans_index = i3 * (local_n2 * n3) + i2 * n3 + i1;
-          fft->fftw_data[trans_index] = resrvbuf[orig_index]
+          fft->fftw_data[trans_index] = resrvbuf[orig_index];
         }
       }
     }
 
     // make another Alltoall communication to perform blocked transposition.
     // Send fft->fftw_data and receive on resrvbuf
-    MPI_Alltoall(fft->fftw_data,
-                 local_n1 * local_n2 * n3 * sizeof(fftw_complex), resrvbuf,
-                 local_n1 * local_n2 * n3 * sizeof(fftw_complex), MPI_BYTE,
-                 fft->mpi_comm);
 
-    /// perform the reordering again. Write the reordered data to fft->
-    /// fft->fftw_data
+    MPI_Alltoall(fft->fftw_data,local_n1 * local_n2 * n3 * sizeof(fftw_complex), MPI_BYTE,resrvbuf,local_n1 * local_n2 * n3 * sizeof(fftw_complex), MPI_BYTE, fft->mpi_comm);
+
+    /**
+     * perform the reordering of blocks again. 
+     * Write the reordered data to fft->fftw_data
+     */
+
     for (int block = 0; block < npes; block++) {
       for (i1 = 0; i1 < local_n1; i1++) {
         for (i2 = 0; i2 < local_n2; i2++) {
@@ -383,7 +382,7 @@ void fft_3d(fftw_dist_handler *fft, double *data_direct, fftw_complex *data_rec,
             // source index
             int src_i1 = i1 + block * local_n1;
             int src_i2 = i2;
-            int src_index = src_i1 * (local_n2 * n3) + src_i2 * n3 + n3;
+            int src_index = src_i1 * (local_n2 * n3) + src_i2 * n3 + i3;
 
             // destination index
             int dest_i1 = i1;
@@ -396,6 +395,15 @@ void fft_3d(fftw_dist_handler *fft, double *data_direct, fftw_complex *data_rec,
       }
     }
 
+    fac = 1.0 / (n1 * n2 * n3);
+
+    for (i1 = 0; i1 < local_n1; i1++){
+      for (i2 =0; i2 < n2; i2++){
+        for (i3=0; i3 < n3; i3++){
+          data_direct[i1*(n2*n3) + i2*n3 + i3] = creal(fft->fftw_data[i1*(n2*n3) + i2*n3 + i3]) * fac;
+        }
+      }
+    }
 
   }
 }

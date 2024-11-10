@@ -28,6 +28,7 @@ typedef struct {
   ptrdiff_t global_size_grid;
   ptrdiff_t local_size_grid;
   ptrdiff_t local_n1;
+  ptrdiff_t local_n2;
   ptrdiff_t local_n1_offset;
  
   ptrdiff_t n1;
