@@ -1,0 +1,7 @@
+
+diffusion.x:536229 terminated with signal 11 at PC=641cc753bc01 SP=7fff789c77c0.  Backtrace:
+./diffusion.x(+0xbc01)[0x641cc753bc01]
+./diffusion.x(+0xb45e)[0x641cc753b45e]
+/lib/x86_64-linux-gnu/libc.so.6(+0x2a1ca)[0x738aab82a1ca]
+/lib/x86_64-linux-gnu/libc.so.6(__libc_start_main+0x8b)[0x738aab82a28b]
+./diffusion.x(+0xa455)[0x641cc753a455]
