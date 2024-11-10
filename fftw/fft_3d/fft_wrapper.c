@@ -381,7 +381,7 @@ void fft_3d_slice(fftw_handler* fft, fftw_handler* fft_1d_h, fftw_handler* fft_2
 
           //normalization
           for( i = 0; i < n1 * n2 * n3; ++i ) {
-	          data_direct[i] = creal(data_direct[i])*fac;
+	          data_direct[i] = creal(data_rec[i])*fac;
 	        }
         }
     }
