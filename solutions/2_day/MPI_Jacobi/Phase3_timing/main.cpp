@@ -13,8 +13,6 @@ const size_t PrintInterval = 25;
 int main(int argc, char** argv){
     int comm_sz, my_rank;
 
-  
-
     MPI_Init(&argc, &argv);
     MPI_Comm_rank(MPI_COMM_WORLD, &my_rank);
     MPI_Comm_size(MPI_COMM_WORLD, &comm_sz);

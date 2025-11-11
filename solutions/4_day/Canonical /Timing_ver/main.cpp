@@ -39,6 +39,7 @@ int main(int argc, char** argv){
 
 	//get the size of the square matrix
 	size_t N = std::stoi(argv[1]);
+
 	//the square root of communicator size
 	int sqrt_comm_size = static_cast<int>(std::sqrt(comm_sz));
 

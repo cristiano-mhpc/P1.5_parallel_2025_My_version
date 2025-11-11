@@ -5,8 +5,7 @@
 #include "CMesh.hpp"
 #include <fstream>
 #include <iostream>
-#include <vector>
-#include <string>
+#include <vector> #include <string>
 #include <iomanip>
 #include <mpi.h>
 #include "Parallel_CSimple_timer.hpp"

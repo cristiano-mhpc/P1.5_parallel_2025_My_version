@@ -79,6 +79,8 @@ void init_fftw(fftw_dist_handler *fft, int n1, int n2, int n3, MPI_Comm comm) {
    *
    */
 
+
+  
   fft->fftw_data =
       (fftw_complex *)fftw_malloc(fft->local_n1 * n2 * n3 * sizeof(fftw_complex));
 
@@ -93,6 +95,12 @@ void init_fftw(fftw_dist_handler *fft, int n1, int n2, int n3, MPI_Comm comm) {
                        FFTW_BACKWARD, FFTW_ESTIMATE);
   fft->bw_plan_2d = fftw_plan_dft_2d(n2, n3, fft->fftw_data, fft->fftw_data,
                                      FFTW_BACKWARD, FFTW_ESTIMATE);
+
+
+  int n[] = {fft->local_n1};
+  fft->fw_multplan_1d = (1, n, fft->n1*fft->n2,
+                         fft->fftw_data, n,
+                          );                                
 }
 
 void close_fftw(fftw_dist_handler *fft) {
