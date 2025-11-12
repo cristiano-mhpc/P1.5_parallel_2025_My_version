@@ -10,6 +10,9 @@
 #include <stdio.h>
 #include "utilities.h"
 
+#include <sys/stat.h>
+#include <sys/types.h>
+
 int FileExists(const char *filename)
 {    
    FILE *fp = fopen (filename, "r");
@@ -26,11 +29,16 @@ void plot_data_1d( char* name, int n1, int n2, int n3, int dir, double* data)
     char buf[256];
     int index;
 
-    snprintf(buf, sizeof(buf), "%s_%d.dat", name, num); 
+    struct stat st = {0};
+    if (stat("data", &st) == -1) {
+        mkdir("data", 0775);  /* ignore error if already exists */
+    }
+
+    snprintf(buf, sizeof(buf), "data/%s_%d.dat", name, num); 
     while (FileExists(buf))
           {
           num++;
-          snprintf(buf, sizeof(buf), "%s_%d.dat", name, num);
+          snprintf(buf, sizeof(buf), "data/%s_%d.dat", name, num);
           }
     fp = fopen (buf, "w");
 
@@ -78,11 +86,17 @@ void plot_data_2d( char* name, int n1, int n2, int n3, int dir, double* data)
     char buf[256];
     int index;
 
-    snprintf(buf, sizeof(buf), "%s_%d.dat", name, num); 
+    // change the format to prefix data/ and ensure the directory exists. 
+    struct stat st = {0};
+    if (stat("data", &st) == -1) {
+        mkdir("data", 0775);  /* ignore error if already exists */
+    }
+
+    snprintf(buf, sizeof(buf), "data/%s_%d.dat", name, num); 
     while (FileExists(buf))
           {
           num++;
-          snprintf(buf, sizeof(buf), "%s_%d.dat", name, num);
+          snprintf(buf, sizeof(buf), "data/%s_%d.dat", name, num);
           }
     fp = fopen (buf, "w");
 

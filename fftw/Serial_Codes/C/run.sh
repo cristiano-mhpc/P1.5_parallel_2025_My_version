@@ -1,52 +1,49 @@
-#!/bin/bash 
+#!/usr/bin/env bash
+set -euo pipefail
 
-set -euo pipefail 
-
-# ----configuration---- 
+# ---- config ----
 APP="./diffusion.x"
-PREFIX_2D="concentration"
+DATA_DIR="data"
+PREFIX_2D="concentration"   # files like data/concentration_1.dat, ...
 OUT_GIF="diffusion.gif"
 FRAMES_DIR="frames_2d"
 PNG_PREFIX="frame"
 GNUPLOT_TERM="pngcairo"
-SIZE="1200,900" 
-DELAY_CS+=40   # ImageMacgick delay (centiseconds perframe) 
+SIZE="1200,900"
+DELAY_CS=40                 # centiseconds per frame (fixed: was +=)
 
+# ---- sanity checks (do GIF only if tools exist) ----
+need() { command -v "$1" >/dev/null 2>&1 || { echo "Missing $1" >&2; exit 1; }; }
+need gnuplot
 
-#-----cleanup from previous runs ----
-make clean 
-make flush 
+# ---- build & run ----
+if [[ ! -x "$APP" ]]; then
+  echo "Executable $APP not found; building with make..."
+  make -j
+fi
 
-# # ---- 0) sanity checks ----
-# need() { command -v "$1" >/dev/null 2>&1 || { echo "Missing $1"; exit 1; }; }
-# need gnuplot
-# if ! command -v convert >/dev/null 2>&1 && ! command -v magick >/dev/null 2>&1; then
-#   echo "Missing ImageMagick (convert or magick)."; exit 1
-# fi
-
-
-# ---- 1) run the simulation(build first if needed) ----
-if [[ ! -x "$APP" ]]; then 
-    echo "Executable $APP not found; building with make..." 
-    make -j
-fi 
 echo "Running the simulation..."
-"$APP" 
+# ensure data dir exists (your code should mkdir already, but belt & suspenders)
+mkdir -p "$DATA_DIR"
+"$APP"
 
-# ---- 2) create png Frames with gnuplot ---- 
+# ---- frames via gnuplot ----
 echo "Generating PNG frames with gnuplot..."
 rm -rf "$FRAMES_DIR"
 mkdir -p "$FRAMES_DIR"
 
+# find all 2D .dat files in data/ and sort numerically by trailing index
+mapfile -t DAT2D < <(
+  ls "${DATA_DIR}/${PREFIX_2D}_"*.dat 2>/dev/null \
+    | sed -E 's/.*_([0-9]+)\.dat/\1 &/' \
+    | sort -n \
+    | cut -d' ' -f2
+)
 
-# FIND ALL 2D .dat files and sort numerically by the trailing index
-mapfile -t DAT2D < <(ls ${PREFIX_2D}_*.dat 2>/dev/null | sed -E 's/.*_([0-9]+)\.dat/\1 &/' | sort -n | cut -d' ' -f2)
-
-
-if [[ ${#DAT2D[@]} -eq 0 ]]; then 
-    echo "No ${PREFIX_2D}_*.dat files found. Did the run produce 2D slices?"
-    exit 1
-fi 
+if [[ ${#DAT2D[@]} -eq 0 ]]; then
+  echo "No ${DATA_DIR}/${PREFIX_2D}_*.dat files found. Did the run produce 2D slices?"
+  exit 1
+fi
 
 i=1
 for f in "${DAT2D[@]}"; do
@@ -54,18 +51,23 @@ for f in "${DAT2D[@]}"; do
   gnuplot <<-GP
     set terminal ${GNUPLOT_TERM} size ${SIZE}
     set output "${out}"
-    set pm3d map
-    unset colorbox
-    # 'matrix' because plot_data_2d writes a rectangular grid (rows of numbers)
-    splot "${f}" matrix with image
+    unset key
+    set view map
+    set size ratio -1
+    # plot "matrix" (rows of numbers) as an image
+    plot "${f}" matrix with image
 GP
   ((i++))
 done
 
-
-# ---- 3) create the animated GIF with ImageMagick --
-# echo "Creating GIF ${OUT_GIF}..."
-
-# convert -delay $DELAY_CS -loop 0 "${FRAMES_DIR}/${PNG_PREFIX}_*.png" "$OUT_GIF"
-
+# ---- animated GIF (prefer magick; fallback convert; else skip politely) ----
+if command -v magick >/dev/null 2>&1; then
+  echo "Creating GIF ${OUT_GIF} with ImageMagick (magick)..."
+  magick -delay "$DELAY_CS" -loop 0 "${FRAMES_DIR}/${PNG_PREFIX}_*.png" "$OUT_GIF"
+elif command -v convert >/dev/null 2>&1; then
+  echo "Creating GIF ${OUT_GIF} with ImageMagick (convert)..."
+  convert -delay "$DELAY_CS" -loop 0 "${FRAMES_DIR}/${PNG_PREFIX}_*.png" "$OUT_GIF"
+else
+  echo "No ImageMagick found (magick/convert). Skipping GIF; PNG frames are in ${FRAMES_DIR}/"
+fi
 

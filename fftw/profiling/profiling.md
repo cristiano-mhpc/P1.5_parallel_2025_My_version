@@ -7,10 +7,15 @@
 What we need:
 1. A linux environment (Leonardo, local machine, etc.) 
 2. perf
-3. Flame Ggraph implementation from Brendan Gregg's [repo](https://github.com/brendangregg/FlameGraph). 
+3. Flame graph implementation from Brendan Gregg's [repo](https://github.com/brendangregg/FlameGraph). 
 ```bash 
 git clone git@github.com:brendangregg/FlameGraph.git
 ```
 4. Some codes to profile. 
 
 ##### Case 1: Profile the diffusion equation solver serial version. 
+
+1. Add the directory containing FlameGraph scripts to your PATH: 
+```bash
+export PATH=$PATH:/path/to/FlameGraph
+``` 

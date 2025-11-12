@@ -20,13 +20,14 @@
 int main(){
 
     // Dimensions of the system
-    double L1 = 10., L2 = 10., L3 = 20.;
+    /* double L1 = 10., L2 = 10., L3 = 20.; */
+    double L1 = 20., L2 = 20., L3 = 40.;
     // Grid size
     int n1 = 48, n2 = 48, n3 = 96;
     // time step for time integration
     double dt = 2.e-3; 
     // number of time steps
-    int nstep = 101; 
+    int nstep = 2000;//101; 
     // Radius of diffusion channel
     double rad_diff = 0.7;
     // Radius of starting concentration
