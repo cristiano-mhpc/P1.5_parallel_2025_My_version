@@ -17,12 +17,12 @@ DELAY_CS+=40   # ImageMacgick delay (centiseconds perframe)
 make clean 
 make flush 
 
-# ---- 0) sanity checks ----
-need() { command -v "$1" >/dev/null 2>&1 || { echo "Missing $1"; exit 1; }; }
-need gnuplot
-if ! command -v convert >/dev/null 2>&1 && ! command -v magick >/dev/null 2>&1; then
-  echo "Missing ImageMagick (convert or magick)."; exit 1
-fi
+# # ---- 0) sanity checks ----
+# need() { command -v "$1" >/dev/null 2>&1 || { echo "Missing $1"; exit 1; }; }
+# need gnuplot
+# if ! command -v convert >/dev/null 2>&1 && ! command -v magick >/dev/null 2>&1; then
+#   echo "Missing ImageMagick (convert or magick)."; exit 1
+# fi
 
 
 # ---- 1) run the simulation(build first if needed) ----
@@ -64,8 +64,8 @@ done
 
 
 # ---- 3) create the animated GIF with ImageMagick --
-echo "Creating GIF ${OUT_GIF}..."
+# echo "Creating GIF ${OUT_GIF}..."
 
-convert -delay $DELAY_CS -loop 0 "${FRAMES_DIR}/${PNG_PREFIX}_*.png" "$OUT_GIF"
+# convert -delay $DELAY_CS -loop 0 "${FRAMES_DIR}/${PNG_PREFIX}_*.png" "$OUT_GIF"
 
 
