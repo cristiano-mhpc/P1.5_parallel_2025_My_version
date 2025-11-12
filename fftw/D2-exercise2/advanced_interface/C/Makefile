@@ -16,8 +16,15 @@ $(EXE): $(OBJ)
 %.o : %.c $(HEAD)
 	$(CC) $(CFLAGS) -c $<
 
-flush:
-	rm -f *.dat *.gif
 
-clean: 
-	rm -f *.o *.x *~
+# Clean generated data/ and frames/, plus common artifacts
+flush:
+	@rm -f data/concentration_*.dat data/1d_conc_*.dat data/diffusivity_*.dat || true
+	@rm -rf frames_2d || true
+	@rm -f flame*.svg out.folded perf.data* *.gif *.png || true
+
+clean:
+	@rm -f *.o *.x *~ core core.* vgcore.* *.btr  *.dat
+
+distclean: clean flush
+

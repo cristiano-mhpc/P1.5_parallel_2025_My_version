@@ -32,7 +32,7 @@ int main(int argc, char *argv[]) {
   // time step for time integration
   double dt = 2.e-3;
   // number of time steps
-  int nstep = 100;
+  int nstep = 2000;
   // Radius of diffusion channel
   double rad_diff = 0.7;
   // Radius of starting concentration

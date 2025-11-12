@@ -1,5 +1,5 @@
 CC ?= gcc
-CFLAGS ?= -O3 -Wall -I$(FFTW_INC)
+CFLAGS ?= -O3 -g -Wall -I$(FFTW_INC)
 LIBS ?= -L$(FFTW_LIB) -lfftw3 -lm
 
 EXE  = diffusion.x

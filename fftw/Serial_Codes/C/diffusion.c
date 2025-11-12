@@ -20,8 +20,7 @@
 int main(){
 
     // Dimensions of the system
-    /* double L1 = 10., L2 = 10., L3 = 20.; */
-    double L1 = 20., L2 = 20., L3 = 40.;
+    double L1 = 10., L2 = 10., L3 = 20.;
     // Grid size
     int n1 = 48, n2 = 48, n3 = 96;
     // time step for time integration
