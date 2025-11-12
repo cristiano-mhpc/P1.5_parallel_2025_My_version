@@ -1,8 +1,0 @@
-
-diffusion.x:468030 terminated with signal 11 at PC=5eb245212a9c SP=7ffd01b3f9c0.  Backtrace:
-./diffusion.x(+0xca9c)[0x5eb245212a9c]
-./diffusion.x(+0xd67f)[0x5eb24521367f]
-./diffusion.x(+0xadaa)[0x5eb245210daa]
-/lib/x86_64-linux-gnu/libc.so.6(+0x2a1ca)[0x740a4122a1ca]
-/lib/x86_64-linux-gnu/libc.so.6(__libc_start_main+0x8b)[0x740a4122a28b]
-./diffusion.x(+0xa455)[0x5eb245210455]

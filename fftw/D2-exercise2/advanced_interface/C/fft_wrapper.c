@@ -97,10 +97,10 @@ void init_fftw(fftw_dist_handler *fft, int n1, int n2, int n3, MPI_Comm comm) {
                                      FFTW_BACKWARD, FFTW_ESTIMATE);
 
 
-  int n[] = {fft->local_n1};
-  fft->fw_multplan_1d = (1, n, fft->n1*fft->n2,
-                         fft->fftw_data, n,
-                          );                                
+  /* int n[] = {fft->local_n1}; */
+  /* fft->fw_multplan_1d = (1, n, fft->n1*fft->n2, */
+  /*                        fft->fftw_data, n, */
+  /*                         ); */                                
 }
 
 void close_fftw(fftw_dist_handler *fft) {
