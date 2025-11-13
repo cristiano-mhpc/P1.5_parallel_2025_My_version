@@ -1,9 +1,7 @@
 ### Profiling using `perf` with Flame Graphs for visualization<img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/78.png" width="55" style="display:inline; vertical-align:middle;"> 
 
 - In performance analysis, one of the routine task is to determine why CPU is busy. To answer this question do a profiling of stack traces. 
-
 - A stack trace is just list of function calls that were active when something happened. It is like a snapshot of the program's call stack at a specific moment in time. 
-
 
 - `perf record` command can capture populations stack traces with the (`-g`) option enabled.
 
@@ -169,7 +167,7 @@ Now you can go to town with the flame graph and identify performance bottlenecks
 
 module load fftw/3.3.10--openmpi--4.1.6--gcc--12.2.0-spack0.22
 
-make disclean 
+make distclean 
 make -j 
 
 # Launch
