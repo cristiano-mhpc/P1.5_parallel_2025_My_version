@@ -256,3 +256,4 @@ flamegraph.pl --title "Diffusion MPI 4 tasks" rank0_3.folded > flamegraph_mpi_4t
 ```
 5. You can now view the generated flame graph, `flamegraph_mpi_4tasks.svg`, using a web browser or an SVG viewer. The flame graph will help you identify performance bottlenecks in the diffusion equation solver MPI version code. <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/146.png" width="40" style="display:inline; vertical-align:middle;"> 
 
+![Flame grapah: MPI 4 tasks](../../flames_from_leo/flamegraph_MPI_rank0_3.svg)
