@@ -11,8 +11,6 @@
 
 - `perf record` command can capture populations stack traces with the (`-g`) option enabled.
 
-- `perf report` summarize hundreds of stack trace samples as text. Similar code paths are coalesed and summary is shown as a tree graph. Can be very daunting to read or difficult to comprehend.    
-
 - `perf record -F 999 -g ./a.out` you tell the kernel “Every 1/999 seconds, interrupt the CPU and take a snapshot of what the program is doing.
 - at each iterrupt the kernel asks: 
     - what instruction is currently executing? 
@@ -21,6 +19,9 @@
     - “Which function am I in?”
     - “Which function am I in?”
     - This is one perd sample 
+
+
+- `perf report` summarize hundreds of stack trace samples as text. Similar code paths are coalesed and summary is shown as a tree graph. Can be very daunting to read or difficult to comprehend.    
 
 - Enter Flame graphs 
 
