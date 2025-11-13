@@ -1,7 +1,28 @@
 ### Profiling using `perf` with Flame Graphs for visualization<img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/78.png" width="50" style="display:inline; vertical-align:middle;"> 
 
+- In performance analysis, one of the routine task is to determine why CPU is busy. To answer this question do a profiling of stack traces. 
+
+- Profile by sampling at a fixed rate 
+   - coarse but effective to see which code paths are hot. 
+
+- It works by doing a timed iterrupt that collects the current program counter, function address, stack traces and translate this into something human readable. 
+
+- `perf record` command can capture populations stack traces with the (`-g`) option enabled.
+
+- `perf report` summarize hundreds of stack trace samples as text. Similar code paths are coalesed and summary is shown as a tree graph. Can be very daunting to read or difficult to comprehend.    
+
+- Enter Flame graphs 
+
+- a tool for visualiazing stack traces and breakdown execution time in profiled applications.
+
 
 - We use Flame graphs to visualize profiling data collected by a profiler such as `perf`. Flame graphs help identify performance bottlenecks in applications by displaying stack traces in a visually intuitive manner.
+
+- `x`- axis shows the stack profile population, sorted alphabetically. 
+- `y`- axis shows the stack depth. 
+- each reactangle represents a stack frame. 
+- the wider a stack frame the more often it was present on in the stacks. 
+- top edge shows whats on the CPU and beneath it is its ancestry. 
 
 What we need:
 1. A linux environment (Leonardo, local machine running on Linux, etc.) 
