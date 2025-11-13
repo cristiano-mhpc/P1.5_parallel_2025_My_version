@@ -45,8 +45,6 @@ perf.data*
 *.perf            # per-rank files (e.g., rankXX.perf)
 *.folded
 out.folded
-flame_*.svg
-flame*.svg
 *.qcache
 *.nvvp
 nsys-rep/
