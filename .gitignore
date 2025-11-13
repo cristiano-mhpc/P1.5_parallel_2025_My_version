@@ -45,8 +45,6 @@ perf.data*
 *.perf            # per-rank files (e.g., rankXX.perf)
 *.folded
 out.folded
-flame_*.svg
-flame*.svg
 *.qcache
 *.nvvp
 nsys-rep/
@@ -70,12 +68,10 @@ frame_*.png
 
 # quick plots
 *.png
-*.svg
 
 # Keep images placed under docs/ (override the global image ignores above)
 !docs/
 !docs/**.png
-!docs/**.svg
 !docs/**.gif
 !docs/**.jpg
 !docs/**.jpeg
