@@ -2,6 +2,8 @@
 
 - In performance analysis, one of the routine task is to determine why CPU is busy. To answer this question do a profiling of stack traces. 
 
+- A stack trace is just list of function calls that were active when something happened. It is like a snapshot of the program's call stack at a specific moment in time. 
+
 - Profile by sampling at a fixed rate 
    - coarse but effective to see which code paths are hot. 
 
