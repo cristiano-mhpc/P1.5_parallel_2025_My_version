@@ -1,13 +1,11 @@
-CC ?= gcc
-CFLAGS ?= -O3 -g -Wall -I$(FFTW_INC)
-LIBS ?= -L$(FFTW_LIB) -lfftw3 -lm
+CC = gcc
+CFLAGS = -O3 -g -Wall -fno-omit-frame-pointer -I$(FFTW_INC)
+LIBS = -L$(FFTW_LIB) -lfftw3 -lm
 
 EXE  = diffusion.x
 SRC  = diffusion.c plot_data.c fft_wrapper.c derivative.c
 HEAD = utilities.h
 OBJ  = $(SRC:.c=.o)
-
-.PHONY: all clean flush distclean run
 
 all: $(EXE)
 
