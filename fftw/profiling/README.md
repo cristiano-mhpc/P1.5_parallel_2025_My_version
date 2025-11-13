@@ -1,4 +1,4 @@
-### Profiling using `perf` with Flame Graphs for visualization<img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/78.png" width="50" style="display:inline; vertical-align:middle;"> 
+### Profiling using `perf` with Flame Graphs for visualization<img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/78.png" width="55" style="display:inline; vertical-align:middle;"> 
 
 - In performance analysis, one of the routine task is to determine why CPU is busy. To answer this question do a profiling of stack traces. 
 
