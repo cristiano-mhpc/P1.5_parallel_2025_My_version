@@ -1,0 +1,88 @@
+make: *** No rule to make target 'disclean'.  Stop.
+WARNING: Kernel address maps (/proc/{kallsyms,modules}) are restricted,
+check /proc/sys/kernel/kptr_restrict and /proc/sys/kernel/perf_event_paranoid.
+
+Samples in kernel functions may not be resolved if a suitable vmlinux
+file is not found in the buildid cache or in the vmlinux path.
+
+Samples in kernel modules won't be resolved at all.
+
+If some relocation was applied (e.g. kexec) symbols may be misresolved
+even with a suitable vmlinux or kallsyms file.
+
+WARNING: Kernel address maps (/proc/{kallsyms,modules}) are restricted,
+check /proc/sys/kernel/kptr_restrict and /proc/sys/kernel/perf_event_paranoid.
+
+Samples in kernel functions may not be resolved if a suitable vmlinux
+file is not found in the buildid cache or in the vmlinux path.
+
+Samples in kernel modules won't be resolved at all.
+
+If some relocation was applied (e.g. kexec) symbols may be misresolved
+even with a suitable vmlinux or kallsyms file.
+
+WARNING: Kernel address maps (/proc/{kallsyms,modules}) are restricted,
+check /proc/sys/kernel/kptr_restrict and /proc/sys/kernel/perf_event_paranoid.
+
+Samples in kernel functions may not be resolved if a suitable vmlinux
+file is not found in the buildid cache or in the vmlinux path.
+
+Samples in kernel modules won't be resolved at all.
+
+If some relocation was applied (e.g. kexec) symbols may be misresolved
+even with a suitable vmlinux or kallsyms file.
+
+WARNING: Kernel address maps (/proc/{kallsyms,modules}) are restricted,
+check /proc/sys/kernel/kptr_restrict and /proc/sys/kernel/perf_event_paranoid.
+
+Samples in kernel functions may not be resolved if a suitable vmlinux
+file is not found in the buildid cache or in the vmlinux path.
+
+Samples in kernel modules won't be resolved at all.
+
+If some relocation was applied (e.g. kexec) symbols may be misresolved
+even with a suitable vmlinux or kallsyms file.
+
+Couldn't record kernel reference relocation symbol
+Symbol resolution may be skewed if relocation was used (e.g. kexec).
+Check /proc/kallsyms permission or run as root.
+Couldn't record kernel reference relocation symbol
+Symbol resolution may be skewed if relocation was used (e.g. kexec).
+Check /proc/kallsyms permission or run as root.
+Couldn't record kernel reference relocation symbol
+Symbol resolution may be skewed if relocation was used (e.g. kexec).
+Check /proc/kallsyms permission or run as root.
+Couldn't record kernel reference relocation symbol
+Symbol resolution may be skewed if relocation was used (e.g. kexec).
+Check /proc/kallsyms permission or run as root.
+Events disabled
+Events disabled
+Events disabled
+Events disabled
+Events enabled
+Events enabled
+Events enabled
+Events enabled
+[ perf record: Woken up 3077 times to write data ]
+[ perf record: Captured and wrote 770.289 MB /leonardo_scratch/large/userexternal/ctica000/diffusion/perf_25662138/perf.data.rank1 (95286 samples) ]
+[ perf record: Woken up 3183 times to write data ]
+[ perf record: Woken up 3179 times to write data ]
+[ perf record: Woken up 3157 times to write data ]
+Warning:
+Processed 132874 events and lost 1 chunks!
+
+Check IO/CPU overload!
+
+Warning:
+Processed 132552 events and lost 2 chunks!
+
+Check IO/CPU overload!
+
+Warning:
+Processed 131870 events and lost 7 chunks!
+
+Check IO/CPU overload!
+
+[ perf record: Captured and wrote 795.972 MB /leonardo_scratch/large/userexternal/ctica000/diffusion/perf_25662138/perf.data.rank2 (98399 samples) ]
+[ perf record: Captured and wrote 793.412 MB /leonardo_scratch/large/userexternal/ctica000/diffusion/perf_25662138/perf.data.rank0 (98081 samples) ]
+[ perf record: Captured and wrote 788.119 MB /leonardo_scratch/large/userexternal/ctica000/diffusion/perf_25662138/perf.data.rank3 (97424 samples) ]
