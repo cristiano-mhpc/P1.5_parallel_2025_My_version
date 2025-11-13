@@ -4,9 +4,10 @@
 
 - A stack trace is just list of function calls that were active when something happened. It is like a snapshot of the program's call stack at a specific moment in time. 
 
-- It works by doing a timed iterrupt that collects the current program counter, function address, stack traces and translate this into something human readable. 
 
 - `perf record` command can capture populations stack traces with the (`-g`) option enabled.
+
+- It works by doing a timed iterrupt that collects the current program counter, function address, stack traces and translate this into something human readable. 
 
 - `perf record -F 999 -g ./a.out` you tell the kernel “Every 1/999 seconds, interrupt the CPU and take a snapshot of what the program is doing.
 - at each iterrupt the kernel asks: 
