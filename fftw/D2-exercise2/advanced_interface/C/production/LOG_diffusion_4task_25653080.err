@@ -1,0 +1,121 @@
+make: *** No rule to make target 'disclean'.  Stop.
+In file included from derivative.c:11:
+utilities.h:52:12: warning: inline function 'index_f' declared but never defined
+   52 | inline int index_f ( int i1, int i2, int i3, int n1, int n2, int n3 );
+      |            ^~~~~~~
+In file included from plot_data.c:6:
+utilities.h:52:12: warning: inline function 'index_f' declared but never defined
+   52 | inline int index_f ( int i1, int i2, int i3, int n1, int n2, int n3 );
+      |            ^~~~~~~
+In file included from diffusion.c:18:
+utilities.h:52:12: warning: inline function 'index_f' declared but never defined
+   52 | inline int index_f ( int i1, int i2, int i3, int n1, int n2, int n3 );
+      |            ^~~~~~~
+fft_wrapper.c: In function 'init_fftw':
+fft_wrapper.c:44:7: warning: unused variable 'buffer_size' [-Wunused-variable]
+   44 |   int buffer_size = 0;
+      |       ^~~~~~~~~~~
+fft_wrapper.c: In function 'fft_3d':
+fft_wrapper.c:141:66: warning: unused variable 'nblock' [-Wunused-variable]
+  141 |   int n2 = fft->n2, n3 = fft->n3, n1 = fft->n1, npes, block_dim, nblock;
+      |                                                                  ^~~~~~
+fft_wrapper.c:141:55: warning: unused variable 'block_dim' [-Wunused-variable]
+  141 |   int n2 = fft->n2, n3 = fft->n3, n1 = fft->n1, npes, block_dim, nblock;
+      |                                                       ^~~~~~~~~
+fft_wrapper.c:140:61: warning: unused variable 'i2_loc' [-Wunused-variable]
+  140 |   int i1, i2, i3, index, start_index, end_index, index_buf, i2_loc;
+      |                                                             ^~~~~~
+fft_wrapper.c:140:50: warning: unused variable 'index_buf' [-Wunused-variable]
+  140 |   int i1, i2, i3, index, start_index, end_index, index_buf, i2_loc;
+      |                                                  ^~~~~~~~~
+fft_wrapper.c:140:39: warning: unused variable 'end_index' [-Wunused-variable]
+  140 |   int i1, i2, i3, index, start_index, end_index, index_buf, i2_loc;
+      |                                       ^~~~~~~~~
+fft_wrapper.c:140:26: warning: unused variable 'start_index' [-Wunused-variable]
+  140 |   int i1, i2, i3, index, start_index, end_index, index_buf, i2_loc;
+      |                          ^~~~~~~~~~~
+fft_wrapper.c:140:19: warning: unused variable 'index' [-Wunused-variable]
+  140 |   int i1, i2, i3, index, start_index, end_index, index_buf, i2_loc;
+      |                   ^~~~~
+WARNING: Kernel address maps (/proc/{kallsyms,modules}) are restricted,
+check /proc/sys/kernel/kptr_restrict and /proc/sys/kernel/perf_event_paranoid.
+
+Samples in kernel functions may not be resolved if a suitable vmlinux
+file is not found in the buildid cache or in the vmlinux path.
+
+Samples in kernel modules won't be resolved at all.
+
+If some relocation was applied (e.g. kexec) symbols may be misresolved
+even with a suitable vmlinux or kallsyms file.
+
+WARNING: Kernel address maps (/proc/{kallsyms,modules}) are restricted,
+check /proc/sys/kernel/kptr_restrict and /proc/sys/kernel/perf_event_paranoid.
+
+Samples in kernel functions may not be resolved if a suitable vmlinux
+file is not found in the buildid cache or in the vmlinux path.
+
+Samples in kernel modules won't be resolved at all.
+
+If some relocation was applied (e.g. kexec) symbols may be misresolved
+even with a suitable vmlinux or kallsyms file.
+
+WARNING: Kernel address maps (/proc/{kallsyms,modules}) are restricted,
+check /proc/sys/kernel/kptr_restrict and /proc/sys/kernel/perf_event_paranoid.
+
+Samples in kernel functions may not be resolved if a suitable vmlinux
+file is not found in the buildid cache or in the vmlinux path.
+
+Samples in kernel modules won't be resolved at all.
+
+If some relocation was applied (e.g. kexec) symbols may be misresolved
+even with a suitable vmlinux or kallsyms file.
+
+WARNING: Kernel address maps (/proc/{kallsyms,modules}) are restricted,
+check /proc/sys/kernel/kptr_restrict and /proc/sys/kernel/perf_event_paranoid.
+
+Samples in kernel functions may not be resolved if a suitable vmlinux
+file is not found in the buildid cache or in the vmlinux path.
+
+Samples in kernel modules won't be resolved at all.
+
+If some relocation was applied (e.g. kexec) symbols may be misresolved
+even with a suitable vmlinux or kallsyms file.
+
+Couldn't record kernel reference relocation symbol
+Symbol resolution may be skewed if relocation was used (e.g. kexec).
+Check /proc/kallsyms permission or run as root.
+Couldn't record kernel reference relocation symbol
+Symbol resolution may be skewed if relocation was used (e.g. kexec).
+Check /proc/kallsyms permission or run as root.
+Couldn't record kernel reference relocation symbol
+Symbol resolution may be skewed if relocation was used (e.g. kexec).
+Check /proc/kallsyms permission or run as root.
+Couldn't record kernel reference relocation symbol
+Symbol resolution may be skewed if relocation was used (e.g. kexec).
+Check /proc/kallsyms permission or run as root.
+Events disabled
+Events disabled
+Events disabled
+Events disabled
+Events enabled
+Events enabled
+Events enabled
+Events enabled
+[ perf record: Woken up 3534 times to write data ]
+[ perf record: Woken up 3551 times to write data ]
+[ perf record: Woken up 3489 times to write data ]
+Warning:
+Processed 144696 events and lost 1 chunks!
+
+Check IO/CPU overload!
+
+Warning:
+Processed 144335 events and lost 1 chunks!
+
+Check IO/CPU overload!
+
+[ perf record: Captured and wrote 888.258 MB /leonardo_scratch/large/userexternal/ctica000/diffusion/perf_25653080/perf.data.rank0 (109853 samples) ]
+[ perf record: Captured and wrote 885.157 MB /leonardo_scratch/large/userexternal/ctica000/diffusion/perf_25653080/perf.data.rank1 (109468 samples) ]
+[ perf record: Woken up 3547 times to write data ]
+[ perf record: Captured and wrote 872.514 MB /leonardo_scratch/large/userexternal/ctica000/diffusion/perf_25653080/perf.data.rank3 (107899 samples) ]
+[ perf record: Captured and wrote 887.494 MB /leonardo_scratch/large/userexternal/ctica000/diffusion/perf_25653080/perf.data.rank2 (109758 samples) ]

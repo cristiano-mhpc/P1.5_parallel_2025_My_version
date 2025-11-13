@@ -1,5 +1,5 @@
 CC=mpicc
-CFLAGS = -O0 -g -Wall -I./ -I$(FFTW_INC) 
+CFLAGS = -O2 -g -Wall -I./ -I$(FFTW_INC) 
 LIBS = -L$(FFTW_LIB) -lfftw3_mpi -lfftw3 -lm		
 
 EXE = diffusion.x

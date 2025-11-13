@@ -26,7 +26,7 @@ int main(){
     // time step for time integration
     double dt = 2.e-3; 
     // number of time steps
-    int nstep = 2000;//101; 
+    int nstep = 1000;//101; 
     // Radius of diffusion channel
     double rad_diff = 0.7;
     // Radius of starting concentration
