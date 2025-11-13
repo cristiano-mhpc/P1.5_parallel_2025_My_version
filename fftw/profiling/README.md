@@ -13,6 +13,15 @@
 
 - `perf report` summarize hundreds of stack trace samples as text. Similar code paths are coalesed and summary is shown as a tree graph. Can be very daunting to read or difficult to comprehend.    
 
+- `perf record -F 999 -g ./a.out` you tell the kernel “Every 1/999 seconds, interrupt the CPU and take a snapshot of what the program is doing.
+- at each iterrupt the kernel asks: 
+    - what instruction is currently executing? 
+    - what is the call stack that led to this instruction?
+    - “Who called it?”
+    - “Which function am I in?”
+    - “Which function am I in?”
+    - This is one perd sample 
+
 - Enter Flame graphs 
 
 - a tool for visualiazing stack traces and breakdown execution time in profiled applications.
