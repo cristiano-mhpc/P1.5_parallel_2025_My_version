@@ -4,9 +4,6 @@
 
 - A stack trace is just list of function calls that were active when something happened. It is like a snapshot of the program's call stack at a specific moment in time. 
 
-- Profile by sampling at a fixed rate 
-   - coarse but effective to see which code paths are hot. 
-
 - It works by doing a timed iterrupt that collects the current program counter, function address, stack traces and translate this into something human readable. 
 
 - `perf record` command can capture populations stack traces with the (`-g`) option enabled.
@@ -19,6 +16,9 @@
     - “Which function am I in?”
     - “Which function am I in?”
     - This is one perd sample 
+
+- Profile by sampling at a fixed rate 
+   - coarse but effective to see which code paths are hot. 
 
 
 - `perf report` summarize hundreds of stack trace samples as text. Similar code paths are coalesed and summary is shown as a tree graph. Can be very daunting to read or difficult to comprehend.    
