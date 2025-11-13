@@ -111,6 +111,7 @@ google-chrome flamegraph_serial.svg
 ```
 Now you can go to town with the flame graph and identify performance bottlenecks in your code! <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/26.png" width="50" style="display:inline; vertical-align:middle;"> 
 
+![Flame grapah: MPI 4 tasks](../flames_from_leo/flamegraph_serial.svg)
 
 ##### Case 2: Profile the diffusion equation solver (multiprocess version with MPI). <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/2.png" width="50" style="display:inline; vertical-align:middle;"> 
 
